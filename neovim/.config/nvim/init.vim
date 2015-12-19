@@ -69,7 +69,8 @@ nnoremap <space> za
 set foldlevelstart=10    " start with fold level of 1
 " }}}
 " Line Shortcuts {{{
-noremap \ ,
+nnoremap \ ;
+nnoremap ; ,
 nnoremap k gk
 nnoremap gV `[v`]
 inoremap ii <esc>

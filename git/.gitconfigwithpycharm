@@ -1,13 +1,13 @@
 [user]
-	name = Mike Rooney
-	email = rooneym@netapp.com
+    name = Mike Rooney
+    email = rooneym@netapp.com
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
 [gitreview]
-	username = rooneym
+    username = rooneym
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+    clean = git-lfs clean %f
+    smudge = git-lfs smudge %f
     required = true
 [diff]
     tool = pycharm
@@ -19,4 +19,4 @@
 [mergetool "pycharm"]
     cmd = /Applications/PyCharm.app/Contents/MacOS/pycharm merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
 [core]
-	editor = nvim
+    editor = nvim

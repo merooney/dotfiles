@@ -1,0 +1,5 @@
+[user]
+	name = Mike Rooney
+	email = mrooneyunc@gmail.com
+[credential]
+	helper = osxkeychain

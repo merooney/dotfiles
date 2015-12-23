@@ -128,7 +128,6 @@ nnoremap <silent> <leader>a :bp<CR>
 nnoremap <silent> <leader>d :bn<CR>
 nnoremap <leader>w :wq!<CR>
 nnoremap <Leader>o :CtrlP<CR>
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 " bind <leader>s to grep word under cursor
 nnoremap <leader>s :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <silent> <leader>/ :nohlsearch<CR>

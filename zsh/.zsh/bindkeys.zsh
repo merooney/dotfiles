@@ -2,6 +2,7 @@
 # cat > /dev/null
 # And press it
 
+export KEYTIMEOUT=1
 bindkey "^K"      kill-whole-line                      # ctrl-k
 bindkey "^R"      history-incremental-search-backward  # ctrl-r
 bindkey "^A"      beginning-of-line                    # ctrl-a  

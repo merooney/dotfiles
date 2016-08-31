@@ -1,3 +1,4 @@
+source ~/.zsh/vimode.zsh
 source ~/.zsh/prompt.zsh
 source ~/.zsh/checks.zsh
 source ~/.zsh/colors.zsh
@@ -10,5 +11,4 @@ source ~/.zsh/bindkeys.zsh
 source ~/.zsh/functions.zsh
 source ~/.zsh/history.zsh
 source ~/.zsh/zsh_hooks.zsh
-source ~/.zsh/vimode.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

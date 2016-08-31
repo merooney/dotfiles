@@ -3,13 +3,9 @@
 # And press it
 
 export KEYTIMEOUT=1
-bindkey "^K"      kill-whole-line                      # ctrl-k
-bindkey "^R"      history-incremental-search-backward  # ctrl-r
-bindkey "^A"      beginning-of-line                    # ctrl-a  
-bindkey "^E"      end-of-line                          # ctrl-e
-bindkey "[B"      history-search-forward               # down arrow
-bindkey "[A"      history-search-backward              # up arrow
-bindkey "^D"      delete-char                          # ctrl-d
-bindkey "^F"      forward-char                         # ctrl-f
-bindkey "^B"      backward-char                        # ctrl-b
+# Old habits die hard
+bindkey -M viins '^r' history-incremental-search-backward
+bindkey -M vicmd '^r' history-incremental-search-backward
+# Make it so shift+tab cycles in reverse
+bindkey "$terminfo[kcbt]" reverse-menu-complete
 bindkey -v   # Default to standard vi bindings, regardless of editor string

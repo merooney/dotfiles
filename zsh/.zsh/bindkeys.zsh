@@ -3,9 +3,9 @@
 # And press it
 
 export KEYTIMEOUT=1
-# Old habits die hard
-bindkey -M viins '^r' history-incremental-search-backward
-bindkey -M vicmd '^r' history-incremental-search-backward
-# Make it so shift+tab cycles in reverse
-bindkey "$terminfo[kcbt]" reverse-menu-complete
 bindkey -v   # Default to standard vi bindings, regardless of editor string
+# Old habits die hard
+bindkey -M viins "^r" history-incremental-search-backward
+bindkey -M vicmd "^r" history-incremental-search-backward
+# Make it so shift+tab cycles in reverse
+bindkey "^[[Z" reverse-menu-complete

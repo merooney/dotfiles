@@ -1,14 +1,9 @@
-source ~/.zsh/vimode.zsh
-source ~/.zsh/prompt.zsh
-source ~/.zsh/checks.zsh
-source ~/.zsh/colors.zsh
-source ~/.zsh/setopt.zsh
-source ~/.zsh/exports.zsh
-source ~/.zsh/prompt.zsh
-source ~/.zsh/completion.zsh
-source ~/.zsh/aliases.zsh
-source ~/.zsh/bindkeys.zsh
-source ~/.zsh/functions.zsh
-source ~/.zsh/history.zsh
-source ~/.zsh/zsh_hooks.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# If pure has not be installed before, make sure to symlink into function path
+if [ ! -f /usr/local/share/zsh/site-functions/prompt_pure_setup ]; then
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    ln -s "$DIR/pure/pure.zsh" /usr/local/share/zsh/site-functions/prompt_pure_setup
+    ln -s "$DIR/pure/async.zsh" /usr/local/share/zsh/site-functions/async
+fi
+
+autoload -U promptinit; promptinit
+prompt pure

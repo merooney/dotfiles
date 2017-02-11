@@ -4,6 +4,6 @@
 [credential]
     helper = osxkeychain
 [gitreview]
-    username = rooneym
+    username = merooney
 [core]
-    editor = vi
+    editor = nvim

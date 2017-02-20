@@ -1,37 +1,11 @@
 " Plugin settings and leader {{{
 call plug#begin('~/.local/share/nvim/site/plugged')
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'freeo/vim-kalisi'
-Plug 'Valloric/YouCompleteMe'
-Plug 'nvie/vim-flake8'
-Plug 'tpope/vim-fugitive'
+" Put plugins here
 call plug#end()
 let mapleader=","
 " }}}
-" CtrlP Settings {{{
-let g:ctrlp_max_files=0
-let g:ctrlp_match_window = 'results:100,max:25' " overcome limit imposed by max height
-let g:ctrlp_use_caching = 0
-let g:ctrlp_by_filename = 0
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
-
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-else
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-  let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
-    \ }
-endif
-" }}}
-" Python Setting {{{
-" Can call pep8 and flake8 by hitting <F7>
-autocmd BufWritePost *.py call Flake8()
-" }}}
 " Colors {{{
 syntax enable           " enable syntax processing
-colorscheme kalisi
-set background=dark
 " }}}
 " Misc {{{
 set visualbell
@@ -68,10 +42,6 @@ filetype plugin on
 set autoindent
 " }}}
 " UI Layout {{{
-if (exists('+colorcolumn'))
-    set colorcolumn=80
-    highlight ColorColumn ctermbg=9
-endif
 set splitbelow
 set splitright
 set showcmd             " show command in bottom bar
@@ -83,11 +53,11 @@ set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 " }}}
 " Searching {{{
+nnoremap <esc> :noh<return><esc>
 set ignorecase          " ignore case when searching
 set smartcase           " don't ignore case if query has capital
 set magic               " extended regex
 set incsearch           " search as characters are entered
-set hlsearch            " highlight all matches
 " }}}
 " Folding {{{
 set foldmethod=indent   " fold based on indent level

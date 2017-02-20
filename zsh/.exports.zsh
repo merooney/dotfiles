@@ -4,10 +4,11 @@ export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin
 typeset -U PATH
 
 # Setup terminal, and turn on colors
-#export TERM=xterm-256color
-export TERM=screen-256color
+export TERM=xterm-256color
+#export TERM=screen-256color
 export CLICOLOR=1
 export LSCOLORS=Gxfxcxdxbxegedabagacad
+export MYNVIMRC=/Users/merooney/Code/dotfiles/neovim/.config/nvim/init.vim
 
 # Enable color in grep
 export GREP_OPTIONS='--color=auto'

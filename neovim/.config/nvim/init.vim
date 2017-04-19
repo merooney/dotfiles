@@ -3,6 +3,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 """ FZF settings
@@ -17,8 +18,7 @@ command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>),
 syntax enable
 " Set grepprg to be ripgrep
 set grepprg=rg\ --vimgrep
-" TODO need to makes tags var setting more robust
-set tags=./tags,tags;$HOME
+set tags=./tags;,tags;
 set path+=**
 set sidescroll=1
 set visualbell
@@ -47,7 +47,7 @@ set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico,*.pdf,*.psd
 set showmatch
 set ruler
 set list
-set listchars=tab:>.,trail:.,extends:#
+set listchars=tab:>.,extends:#
 
 """ Searching
 nnoremap <esc> :noh<return><esc>
@@ -73,17 +73,33 @@ vnoremap / /\v
 nnoremap \ ;
 nnoremap ; ,
 nnoremap k gk
+"XXX These two overwrite
+nnoremap B ^
+nnoremap E $
 " Visually select most recently pasted code
 nnoremap gV `[v`]
-inoremap jj <esc>
-vnoremap jj <esc>
+inoremap jk <esc>
+" Enter and backspace for quick traversal
+nnoremap <CR> G
+nnoremap <BS> gg
 
 """ General Shortcuts
 " Easy expansion of the active file directory
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+" Trick to save a file that requires sudo when not opened with sudo
+cmap w!! w !sudo tee % >/dev/null
+imap <c-x><c-o> <plug>(fzf-complete-line)
+" Move to end of line on yank/paste
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
 
 """ Leader Shortcuts
 let mapleader=","
+map <leader>b :Buffers<CR>
+map <leader>f :Files<CR>
+map <leader>g :GFiles<CR>
+map <leader>t :Tags<CR>
 tnoremap <leader>h <C-\><C-n><C-w>h
 tnoremap <leader>j <C-\><C-n><C-w>j
 tnoremap <leader>k <C-\><C-n><C-w>k
@@ -95,19 +111,24 @@ nnoremap <leader>h <C-w>h
 nnoremap <leader>j <C-w>j
 nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
+" Enable yanking to and pasting from system register
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
 " Create a new file in the cwd
 nnoremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+nnoremap <Leader>cd :lcd %:p:h<CR>:pwd<CR>
 nnoremap <silent> <leader>a :bp<CR>
 nnoremap <silent> <leader>d :bn<CR>
 nnoremap <leader>w :wq!<CR>
-" nnoremap <Leader>o :CtrlP<CR>
-" bind <leader>s to grep word under cursor
-nnoremap <leader>s :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-nnoremap <silent> <leader>sv :source $MYNVIMRC<CR>
-nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>p :vsp **/*
+nnoremap <leader>s :%s/
+nnoremap <silent> <leader>vs :source $MYNVIMRC<CR>
+nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
 nnoremap <leader>q :call ToggleNumber()<CR>
-map <leader>t :sp<CR>:terminal<CR>
+map <leader>` :sp<CR>:terminal<CR>
 
 """ Backups and History
 set backup

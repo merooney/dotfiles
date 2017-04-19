@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/merooney/Code/dotfiles'
-let g:netrw_dirhist_2='/Users/merooney/Code/dotfiles/zsh'
-let g:netrw_dirhist_3='/Users/merooney/Code/dotfiles/neovim/.config'
-let g:netrw_dirhist_4='/Users/merooney/Code/dotfiles/neovim'
-let g:netrw_dirhist_5='/Users/merooney/Code/dotfiles'
-let g:netrw_dirhist_6='/Users/merooney/Code/dotfiles/zsh'

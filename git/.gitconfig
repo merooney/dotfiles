@@ -7,3 +7,5 @@
     username = merooney
 [core]
     editor = nvim
+[init]
+	templatedir = ~/.git_template

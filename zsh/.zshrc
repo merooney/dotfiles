@@ -33,6 +33,8 @@ source ~/.bindkeys.zsh
 source ~/.functions.zsh
 # History settings
 source ~/.history.zsh
+# Set up git hooks directory
+git config --global init.templatedir '~/.git_template'
 # These two lines initiate the modified version of the "Pure" prompt in use
 autoload -U promptinit; promptinit
 prompt pure

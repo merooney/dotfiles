@@ -3,6 +3,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
+" Using fugitive causes vim to search for tags file in .git directories
 Plug 'tpope/vim-fugitive'
 call plug#end()
 
@@ -26,6 +27,7 @@ set noerrorbells
 set backspace=indent,eol,start
 set hidden
 set gdefault
+set virtualedit=all
 
 """ Spaces & Tabs
 set tabstop=4
@@ -43,7 +45,7 @@ set splitright
 set showcmd
 set cursorline
 set wildmenu
-set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico,*.pdf,*.psd
+set wildignore+=*.bmp,*.gif,*.jpg,*.png,*.ico,*.pdf,*.psd
 set showmatch
 set ruler
 set list
@@ -63,7 +65,7 @@ set foldenable
 nnoremap <space> za
 set foldlevelstart=10
 
-""" Line Shortcuts
+""" Movement Shortcuts
 map [[ ?{<CR>w99[{
 map ][ /}<CR>b99]}
 map ]] j0[[%/\{<CR>
@@ -76,14 +78,15 @@ nnoremap k gk
 "XXX These two overwrite
 nnoremap B ^
 nnoremap E $
-" Visually select most recently pasted code
-nnoremap gV `[v`]
+"XXX Still testing this bind out
 inoremap jk <esc>
-" Enter and backspace for quick traversal
-nnoremap <CR> G
-nnoremap <BS> gg
 
 """ General Shortcuts
+" Don't lose visual selection on indent/dedent
+xnoremap < <gv
+xnoremap > >gv
+" Visually select most recently pasted code
+nnoremap gV `[v`]
 " Easy expansion of the active file directory
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 " Trick to save a file that requires sudo when not opened with sudo
@@ -93,13 +96,22 @@ imap <c-x><c-o> <plug>(fzf-complete-line)
 vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
+" Saner command-line-mode history
+cnoremap <c-n> <down>
+cnoremap <c-p> <up>
+" Super screen clear
+nnoremap <leader>l :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
 
 """ Leader Shortcuts
 let mapleader=","
+" There are fzf specific fuzzy finding categories
 map <leader>b :Buffers<CR>
 map <leader>f :Files<CR>
 map <leader>g :GFiles<CR>
 map <leader>t :Tags<CR>
+" Quickly edit a macro
+nnoremap <leader>m  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
+" Easier window traversal
 tnoremap <leader>h <C-\><C-n><C-w>h
 tnoremap <leader>j <C-\><C-n><C-w>j
 tnoremap <leader>k <C-\><C-n><C-w>k
@@ -123,11 +135,12 @@ nnoremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <Leader>cd :lcd %:p:h<CR>:pwd<CR>
 nnoremap <silent> <leader>a :bp<CR>
 nnoremap <silent> <leader>d :bn<CR>
-nnoremap <leader>w :wq!<CR>
+nnoremap <leader>w :w<CR>
 nnoremap <leader>s :%s/
 nnoremap <silent> <leader>vs :source $MYNVIMRC<CR>
 nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
 nnoremap <leader>q :call ToggleNumber()<CR>
+nnoremap <leader>cw <C-w>c
 map <leader>` :sp<CR>:terminal<CR>
 
 """ Backups and History
@@ -138,6 +151,9 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
 set history=1000
 set undolevels=1000
+if exists('*mkdir') && !isdirectory($HOME.'/.vim-tmp')
+  call mkdir($HOME.'/.vim-tmp')
+endif
 
 """ Custom Functions
 function! ToggleNumber()
@@ -161,3 +177,18 @@ xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
 " Recursively vimgrep for word under cursor or selection if you hit leader-star
 nmap <leader>* :execute 'noautocmd vimgrep /\V' . substitute(escape(expand("<cword>"), '\'), '\n', '\\n', 'g') . '/ **'<CR>
 vmap <leader>* :<C-u>call <SID>VSetSearch()<CR>:execute 'noautocmd vimgrep /' . @/ . '/ **'<CR>
+
+""" Personal autocmds
+" Restore cursor position when opening a file
+autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+" Easy switching between C source and header files with file marks
+autocmd BufLeave *.{c,cpp} mark C
+autocmd BufLeave *.h       mark H
+" Smarter cursorline
+autocmd InsertLeave,WinEnter * set cursorline
+autocmd InsertEnter,WinLeave * set nocursorline
+" Remove automatic inclusion of comment leader on <CR>
+autocmd FileType * set fo-=r

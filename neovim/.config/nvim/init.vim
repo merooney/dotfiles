@@ -5,6 +5,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 " Using fugitive causes vim to search for tags file in .git directories
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+" Plug 'junegunn/seoul256.vim'
+Plug 'morhetz/gruvbox'
 call plug#end()
 
 """ FZF settings
@@ -17,6 +20,10 @@ command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>),
 
 """Miscellaneous
 syntax enable
+colo gruvbox
+set background=dark
+" Statusline setting
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 " Set grepprg to be ripgrep
 set grepprg=rg\ --vimgrep
 set tags=./tags;,tags;
@@ -46,7 +53,6 @@ set showcmd
 set cursorline
 set wildmenu
 set wildignore+=*.bmp,*.gif,*.jpg,*.png,*.ico,*.pdf,*.psd
-set showmatch
 set ruler
 set list
 set listchars=tab:>.,extends:#
@@ -68,16 +74,13 @@ set foldlevelstart=10
 """ Movement Shortcuts
 map [[ ?{<CR>w99[{
 map ][ /}<CR>b99]}
-map ]] j0[[%/\{<CR>
+map ]] j0[[%/\{<Clen(payouts)-1R>
 map [] k$][%?}<CR>
 nnoremap / /\v
 vnoremap / /\v
 nnoremap \ ;
 nnoremap ; ,
 nnoremap k gk
-"XXX These two overwrite
-nnoremap B ^
-nnoremap E $
 "XXX Still testing this bind out
 inoremap jk <esc>
 
@@ -87,6 +90,8 @@ xnoremap < <gv
 xnoremap > >gv
 " Visually select most recently pasted code
 nnoremap gV `[v`]
+" Remap enter to not insert a newline when completion menu is visible
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
 " Easy expansion of the active file directory
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 " Trick to save a file that requires sudo when not opened with sudo
@@ -99,8 +104,6 @@ nnoremap <silent> p p`]
 " Saner command-line-mode history
 cnoremap <c-n> <down>
 cnoremap <c-p> <up>
-" Super screen clear
-nnoremap <leader>l :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
 
 """ Leader Shortcuts
 let mapleader=","
@@ -109,6 +112,13 @@ map <leader>b :Buffers<CR>
 map <leader>f :Files<CR>
 map <leader>g :GFiles<CR>
 map <leader>t :Tags<CR>
+" Quickly insert an empty new line without entering insert mode
+nnoremap <Leader>o o<Esc>
+nnoremap <Leader>O O<Esc>
+" Rebind omni complete to just ctrl-l
+inoremap <C-l> <C-x><C-l>
+" Super screen clear
+nnoremap <leader><SPACE> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
 " Quickly edit a macro
 nnoremap <leader>m  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 " Easier window traversal
@@ -116,7 +126,7 @@ tnoremap <leader>h <C-\><C-n><C-w>h
 tnoremap <leader>j <C-\><C-n><C-w>j
 tnoremap <leader>k <C-\><C-n><C-w>k
 tnoremap <leader>l <C-\><C-n><C-w>l
-tnoremap <leader>w <C-\><C-n>:bw!<CR>
+tnoremap <leader>w <C-\><C-n>:bd!<CR>
 tnoremap <leader>q <C-\><C-n>
 nnoremap <leader>z :pc!<CR>
 nnoremap <leader>h <C-w>h
@@ -137,6 +147,7 @@ nnoremap <silent> <leader>a :bp<CR>
 nnoremap <silent> <leader>d :bn<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>s :%s/
+vnoremap <leader>s "hy:%sno/<C-r>h//gc<left><left><left>
 nnoremap <silent> <leader>vs :source $MYNVIMRC<CR>
 nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
 nnoremap <leader>q :call ToggleNumber()<CR>
@@ -192,3 +203,12 @@ autocmd InsertLeave,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline
 " Remove automatic inclusion of comment leader on <CR>
 autocmd FileType * set fo-=r
+" Auto-clean fugitive buffers
+autocmd BufReadPost fugitive://* set bufhidden=delete 
+" Automate saving and reopening dirty buffers
+set autoread 
+augroup autoSaveAndRead
+    autocmd!
+    autocmd TextChanged,InsertLeave,FocusLost * silent! wall
+    autocmd CursorHold * silent! checktime
+augroup END

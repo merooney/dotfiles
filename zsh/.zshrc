@@ -43,7 +43,7 @@ source ~/.vimode.zsh
 # Load up frecency based dir nag
 source ~/.z.sh 
 # Supposed to keep the following line at the end
-source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # This sources the keybinds for fzf (fuzzy finder)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -53,3 +53,5 @@ if [ -f '/Users/merooney/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/merooney/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/merooney/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

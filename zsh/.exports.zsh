@@ -1,5 +1,5 @@
 # zshenv has already started PATH with virtual environments
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin
+export PATH=$PATH:/Users/merooney/miniconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin
 # remove duplicate entries
 typeset -U PATH
 
